@@ -1,91 +1,191 @@
-# API to Database Data Pipeline
+# API-to-Database Data Pipeline
 
 ## Project Overview
 
-This project implements an API-to-database data ingestion pipeline using Python.
+This project implements an end-to-end data ingestion pipeline that extracts e-commerce data from REST APIs, transforms and loads the data into PostgreSQL, and generates business reports using SQL JOIN queries.
 
-The solution extracts customer, product, and order data from REST APIs, transforms the data, loads it into a relational database, and generates business reports using SQL JOIN operations.
+The project demonstrates practical Data Engineering concepts including API extraction, data ingestion, relational database design, PostgreSQL, Python, SQL JOINs, and business reporting.
+
+---
 
 ## Architecture
 
 REST APIs
-↓
+   ↓
 Python API Extraction
-↓
+   ↓
 Data Transformation
-↓
-SQLite Database
-↓
-Customers + Products + Orders + Order Items
-↓
+   ↓
+PostgreSQL Database
+   ↓
 SQL JOIN Queries
-↓
+   ↓
 Business Reports
 
-## Technologies
+---
+
+## Technologies Used
 
 - Python
-- REST API
-- Requests
-- SQLite
+- REST APIs
+- PostgreSQL
 - SQL
+- psycopg2
+- Requests
+- pgAdmin 4
 - Git
 - GitHub
+- VS Code
 
-## APIs Used
+---
+
+## Data Sources
+
+The project uses DummyJSON REST APIs:
 
 - Users API
 - Products API
 - Carts API
 
-## Database Tables
+The APIs provide sample e-commerce customer, product, order, and order-item data.
 
-### Customers
+---
+
+## Database Design
+
+The PostgreSQL database is named:
+
+`ecommerce_db`
+
+### Tables
+
+#### 1. customers
+
 Stores customer information.
 
-### Products
+Columns:
+
+- customer_id
+- first_name
+- last_name
+- email
+- city
+- state
+
+#### 2. products
+
 Stores product information.
 
-### Orders
-Stores order information and customer relationships.
+Columns:
 
-### Order Items
-Stores products, quantities, and prices associated with orders.
+- product_id
+- title
+- category
+- price
+- stock
 
-## Data Pipeline
+#### 3. orders
 
-1. Extract data from REST APIs.
-2. Parse JSON responses.
-3. Transform API data into relational structures.
-4. Create database tables.
-5. Load data into the database.
-6. Execute SQL JOIN queries.
-7. Generate customer and product business reports.
+Stores customer order information.
+
+Columns:
+
+- order_id
+- customer_id
+
+#### 4. order_items
+
+Stores individual products included in each order.
+
+Columns:
+
+- order_item_id
+- order_id
+- product_id
+- quantity
+- price
+
+---
+
+## Data Pipeline Process
+
+### Step 1 — Extract
+
+Python sends HTTP requests to the REST APIs and retrieves:
+
+- Customers
+- Products
+- Orders
+- Order Items
+
+### Step 2 — Transform
+
+The API JSON responses are parsed and converted into relational records.
+
+### Step 3 — Load
+
+The transformed data is loaded into PostgreSQL tables.
+
+### Step 4 — Reporting
+
+SQL JOIN queries combine the relational tables to generate business reports.
+
+---
 
 ## Business Reports
 
 ### Customer Order Report
 
-Provides:
+The customer report uses JOIN operations between:
 
-- Customer name
-- City
-- Number of orders
-- Total items purchased
-- Total purchase amount
+- customers
+- orders
+- order_items
+
+It calculates:
+
+- Total Orders
+- Total Items
+- Total Order Amount
 
 ### Product Sales Report
 
-Provides:
+The product report uses JOIN operations between:
 
-- Product
-- Category
-- Units sold
+- products
+- order_items
+
+It calculates:
+
+- Units Sold
 - Revenue
 
-## How to Run
+---
 
-Create a virtual environment:
+## SQL Concepts Demonstrated
 
-```bash
-python -m venv venv
+- SELECT
+- WHERE
+- JOIN
+- GROUP BY
+- ORDER BY
+- COUNT
+- SUM
+- ROUND
+- Aggregate Functions
+- Foreign Keys
+- Primary Keys
+
+---
+
+## Project Structure
+
+```text
+api-to-database/
+│
+├── main.py
+├── business_reports.sql
+├── README.md
+├── requirements.txt
+├── .gitignore
+└── venv/
